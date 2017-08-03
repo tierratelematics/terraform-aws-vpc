@@ -9,9 +9,44 @@ named `main.tf`:
 
 ```hcl
 
-resource ...
+module "vpc" {
+  source = "git::https://github.com/tierratelematics/terraform-aws-vpc.git//modules/vpc?ref=0.1.0"
 
+  project            = "${var.project}"
+  environment        = "${var.environment}"
+
+  cidr               = "${var.cidr}"
+  external_subnets   = "${var.external_subnets}"
+  internal_subnets   = "${var.internal_subnets}"
+  availability_zones = "${var.availability_zones}"
+}
 ```
+
+The ecample values for the variable are:
+
+```hcl
+project = "sample"
+
+environment = "dev"
+
+aws_region = "eu-west-1"
+
+internal_subnets = ["10.30.0.0/19", "10.30.64.0/19", "10.30.128.0/19"]
+
+external_subnets = ["10.30.32.0/20", "10.30.96.0/20", "10.30.160.0/20"]
+
+availability_zones = ["us-west-2a", "us-west-2b", "us-west-2c"]
+```
+
+## Reference
+
+* [Pratical VPC Design](https://medium.com/aws-activate-startup-blog/practical-vpc-design-8412e1a18dcc) a  useful article on how to design a VPC in AWS.
+* [What is the recommended CIDR when creating VPC on AWS?](https://serverfault.com/questions/630022/what-is-the-recommended-cidr-when-creating-vpc-on-aws)
+* [Subnet Mask Cheat Sheet](https://www.aelius.com/njh/subnet_sheet.html)
+
+## Credits
+
+Many many ideas and code for this project originated from the awesome work from the great folks at https://github.com/segmentio/stack. Check out their work on Terraform and AWS.
 
 ## License
 
